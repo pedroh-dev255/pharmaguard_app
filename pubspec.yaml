@@ -17,6 +17,7 @@ dev_dependencies:
   url_launcher: ^6.0.20
   http: ^0.13.3
   shared_preferences: ^2.0.15
+  flutter_dotenv: ^5.0.2
 
 flutter:
   uses-material-design: true

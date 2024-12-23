@@ -22,7 +22,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    _checkLoginStatus(); // Verifica o status do login ao iniciar
+    _checkLoginStatus();
   }
 
   Future<void> _checkLoginStatus() async {
@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
 
 
   void _launchURL() async {
-    const url = 'https://www.phsolucoes.site';
+    const url = "https://www.phsolucoes.site";
     final Uri uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
@@ -93,6 +93,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  /*
   void _showAlert(String message) {
     showDialog(
       context: context,
@@ -104,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
             TextButton(
               child: Text('OK'),
               onPressed: () {
-                Navigator.of(context).pop(); // Fecha o diálogo
+                Navigator.of(context).pop();
               },
             ),
           ],
@@ -112,10 +113,10 @@ class _LoginPageState extends State<LoginPage> {
       },
     );
   }
-
+  */
   @override
   void dispose() {
-    // 2. Liberar os controladores quando não forem mais necessários
+    
     _emailController.dispose();
     _senhaController.dispose();
     super.dispose();
@@ -130,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.all(10),
         //child: SingleChildScrollView(
           child: Center(
-            child: Form( // 2. Envolver a Column em um Form
+            child: Form(
               key: _formKey,
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -149,9 +150,9 @@ class _LoginPageState extends State<LoginPage> {
                           const Text(
                             'Login',
                             style: TextStyle(
-                              color: Colors.black, // Cor do texto
-                              fontSize: 24, // Tamanho da fonte
-                              fontWeight: FontWeight.bold, // Peso da fonte
+                              color: Colors.black,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                           
@@ -233,9 +234,9 @@ class _LoginPageState extends State<LoginPage> {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromARGB(255, 255, 6, 118), // Cor do botão
+                              backgroundColor: const Color.fromARGB(255, 255, 6, 118),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10), // Raio das bordas do botão
+                                borderRadius: BorderRadius.circular(10),
                               ),
                             ),
                             child: const Text(

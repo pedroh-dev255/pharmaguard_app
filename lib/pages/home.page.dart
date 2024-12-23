@@ -32,8 +32,8 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.clear(); // Limpa todos os dados do usuário
-    // Aqui você pode redirecionar para a tela de login ou outra ação
+    await prefs.clear();
+
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),
@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: Icon(Icons.logout),
-            onPressed: _logout, // Chama a função de deslogar
+            onPressed: _logout,
           ),
         ],
       ),
@@ -61,10 +61,50 @@ class _HomePageState extends State<HomePage> {
           } else {
             final userData = snapshot.data!;
             return Center(
-              child: Text(
-                'Bem-vindo, ${userData['name']}! Seu ID é ${userData['id']}',
-                style: TextStyle(fontSize: 24),
-              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center, // Center the buttons vertically
+                children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomePage()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 51, 255, 0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Text(
+                        'Adicionar Medicamentos',
+                        style: TextStyle(color: Color.fromARGB(255, 238, 238, 238),fontWeight: FontWeight.bold), // Cor do texto do botão
+                      ),
+                    ),
+                    
+                    SizedBox(width: 20),
+
+                    ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomePage()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 255, 0, 0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text(
+                      'Remover Medicamentos',
+                      style: TextStyle(color: Color.fromARGB(255, 255, 255, 255),fontWeight: FontWeight.bold), // Cor do texto do botão
+                    ),
+                  ),
+                ]
+              ) 
             );
           }
         },
