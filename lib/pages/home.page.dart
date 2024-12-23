@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import './login.page.dart';
+
 
 class HomePage extends StatefulWidget {
   final Key? key;
@@ -23,14 +25,31 @@ class _HomePageState extends State<HomePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userId = prefs.getString('userId');
     String? userEmail = prefs.getString('userEmail');
-    return {'id': userId, 'email': userEmail};
+    String? userName = prefs.getString('userName');
+    String? userProfile = prefs.getString('userProfile');
+    return {'id': userId, 'email': userEmail, 'name': userName, 'perfil': userProfile};
+  }
+
+  Future<void> _logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear(); // Limpa todos os dados do usuário
+    // Aqui você pode redirecionar para a tela de login ou outra ação
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Página Inicial'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: _logout, // Chama a função de deslogar
+          ),
+        ],
       ),
       body: FutureBuilder<Map<String, String?>>(
         future: _getUserData,
@@ -43,7 +62,7 @@ class _HomePageState extends State<HomePage> {
             final userData = snapshot.data!;
             return Center(
               child: Text(
-                'Bem-vindo, ${userData['email']}! Seu ID é ${userData['id']}',
+                'Bem-vindo, ${userData['name']}! Seu ID é ${userData['id']}',
                 style: TextStyle(fontSize: 24),
               ),
             );

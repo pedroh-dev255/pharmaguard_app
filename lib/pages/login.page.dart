@@ -75,19 +75,21 @@ class _LoginPageState extends State<LoginPage> {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString('userId', data['user']['id'].toString());
           await prefs.setString('userEmail', data['user']['email']);
+          await prefs.setString('userName', data['user']['name']);
+          await prefs.setString('userProfile', data['user']['profile']);
 
           return 'Login realizado com sucesso!';
         } else {
-          return 'Erro ao fazer login: ${data['error']}';
           print('Erro ao tentar fazer login: ${data['error']}');
+          return 'Erro ao fazer login: ${data['error']}';
         }
       } else {
-        return 'Erro ao fazer login: ${response.body}';
         print('Erro ao tentar fazer login: ${response.body}');
+        return 'Erro ao fazer login: ${response.body}';
       }
     } catch (e) {
-      return 'Erro ao tentar fazer login: $e';
       print('Erro ao tentar fazer login: $e');
+      return 'Erro ao tentar fazer login: $e';
     }
   }
 
@@ -144,7 +146,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Column(
                         children: [
                           SizedBox(height: 8),
-                          Text(
+                          const Text(
                             'Login',
                             style: TextStyle(
                               color: Colors.black, // Cor do texto
@@ -212,9 +214,6 @@ class _LoginPageState extends State<LoginPage> {
 
                                 String email = _emailController.text;
                                 String senha = _senhaController.text;
-
-                                print("Email: $email");
-                                print("Senha: $senha");
 
                                 String? result = await fazerLogin(email, senha);
 
