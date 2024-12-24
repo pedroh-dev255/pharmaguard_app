@@ -1,0 +1,7 @@
+{
+    "creditos_url": "https://www.phsolucoes.site00",
+    "api_base_url": "http://localhost",
+    "notifications_endpoint": "/notifications",
+    "login_endpoint": "/login",
+    "timer": "15"
+}

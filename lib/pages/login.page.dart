@@ -1,17 +1,23 @@
+//dependencias
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
-
+import 'package:flutter/gestures.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/gestures.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+//services
+import 'package:pharmaguard_app/services/config_service.dart';
+import 'package:pharmaguard_app/services/notification_service.dart';
+//paginas
 import './home.page.dart';
-import 'dart:convert';
+
+
 
 //debug
+/*
 import 'add.page.dart';
 import 'rem.page.dart';
-
+*/
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
   @override
@@ -27,6 +33,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
+    
+
+
     super.initState();
     _checkLoginStatus();
   }
@@ -47,7 +56,12 @@ class _LoginPageState extends State<LoginPage> {
 
 
   void _launchURL() async {
-    const url = "https://www.phsolucoes.site";
+    await ConfigService.loadConfig();
+    await NotificationService.initialize();
+    
+    final String? urlCredito = ConfigService.get("creditos_url");
+
+    final url = '$urlCredito' ?? "https://www.phsolucoes.site";
     final Uri uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
@@ -271,6 +285,25 @@ class _LoginPageState extends State<LoginPage> {
 
                           Text('}'),
                           */
+
+                          ElevatedButton(
+                            onPressed: () {
+                              NotificationService.showNotification(
+                                'Notificação importante',
+                                'Aqui está o conteúdo da sua notificação.',
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromARGB(255, 255, 0, 0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: const Text(
+                              'teste notificação',
+                              style: TextStyle(color: Color.fromARGB(255, 255, 255, 255),fontWeight: FontWeight.bold), // Cor do texto do botão
+                            ),
+                          ),
 
                           //---------------------------------
 
