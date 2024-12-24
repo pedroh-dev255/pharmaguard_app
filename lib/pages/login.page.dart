@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
+
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/gestures.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './home.page.dart';
 import 'dart:convert';
+
+//debug
+import 'add.page.dart';
+import 'rem.page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -130,10 +136,13 @@ class _LoginPageState extends State<LoginPage> {
       body: Padding(
         padding: EdgeInsets.all(10),
         //child: SingleChildScrollView(
+        
           child: Center(
+            
             child: Form(
               key: _formKey,
               child: Column(
+                  
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -146,9 +155,16 @@ class _LoginPageState extends State<LoginPage> {
                       padding: EdgeInsets.all(12),
                       child: Column(
                         children: [
+
+                          const Image(
+                            image: AssetImage('assets/favicon.ico'),
+                            height: 100,
+                            width: 100,
+                          ),
+
                           SizedBox(height: 8),
                           const Text(
-                            'Login',
+                            'PharmaGuard',
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 24,
@@ -208,6 +224,55 @@ class _LoginPageState extends State<LoginPage> {
                           ),
 
                           SizedBox(height: 30),
+
+                          //debug ---------------------------
+                          /*
+                          Text('Debug {'),
+
+                          ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => AddPage()),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color.fromARGB(255, 51, 255, 0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              child: const Text(
+                                'Adicionar Medicamentos',
+                                style: TextStyle(color: Color.fromARGB(255, 238, 238, 238),fontWeight: FontWeight.bold), // Cor do texto do botão
+                              ),
+                            ),
+                            
+                            SizedBox(width: 20),
+
+                            ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => RemPage()),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromARGB(255, 255, 0, 0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: const Text(
+                              'Remover Medicamentos',
+                              style: TextStyle(color: Color.fromARGB(255, 255, 255, 255),fontWeight: FontWeight.bold), // Cor do texto do botão
+                            ),
+                          ),
+
+                          Text('}'),
+                          */
+
+                          //---------------------------------
 
                           ElevatedButton(
                             onPressed: () async {

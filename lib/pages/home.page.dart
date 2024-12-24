@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'add.page.dart';
+import 'rem.page.dart';
 import './login.page.dart';
-
 
 class HomePage extends StatefulWidget {
   final Key? key;
@@ -27,7 +28,12 @@ class _HomePageState extends State<HomePage> {
     String? userEmail = prefs.getString('userEmail');
     String? userName = prefs.getString('userName');
     String? userProfile = prefs.getString('userProfile');
-    return {'id': userId, 'email': userEmail, 'name': userName, 'perfil': userProfile};
+    return {
+      'id': userId,
+      'email': userEmail,
+      'name': userName,
+      'perfil': userProfile
+    };
   }
 
   Future<void> _logout() async {
@@ -61,35 +67,38 @@ class _HomePageState extends State<HomePage> {
           } else {
             final userData = snapshot.data!;
             return Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center, // Center the buttons vertically
-                children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomePage()),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 51, 255, 0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: const Text(
-                        'Adicionar Medicamentos',
-                        style: TextStyle(color: Color.fromARGB(255, 238, 238, 238),fontWeight: FontWeight.bold), // Cor do texto do botão
-                      ),
-                    ),
-                    
-                    SizedBox(width: 20),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment
+                        .center,
+                    children: [
+                  Text(userData.toString()),
 
-                    ElevatedButton(
+                  ElevatedButton(
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => HomePage()),
+                        MaterialPageRoute(builder: (context) => AddPage()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 51, 255, 0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text(
+                      'Add Medicamentos',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 24, 24, 24),
+                          fontWeight: FontWeight.bold), // Cor do texto do botão
+                    ),
+                  ),
+                  SizedBox(width: 5),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => RemPage()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -99,12 +108,14 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     child: const Text(
-                      'Remover Medicamentos',
-                      style: TextStyle(color: Color.fromARGB(255, 255, 255, 255),fontWeight: FontWeight.bold), // Cor do texto do botão
+                      'Rem Medicamentos',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 255, 255, 255),
+                          fontWeight: FontWeight.bold), // Cor do texto do botão
                     ),
                   ),
                 ]
-              ) 
+              )
             );
           }
         },
