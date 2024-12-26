@@ -61,7 +61,22 @@ class _LoginPageState extends State<LoginPage> {
     
     final String? urlCredito = ConfigService.get("creditos_url");
 
-    final url = '$urlCredito' ?? "https://www.phsolucoes.site";
+    final url = '$urlCredito';
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      print('Não foi possível abrir o link: $url');
+    }
+  }
+
+  void _launchURL2() async {
+    await ConfigService.loadConfig();
+    await NotificationService.initialize();
+    
+    final String? urlCredito = ConfigService.get("api_base_url");
+
+    final url = '$urlCredito';
     final Uri uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
@@ -71,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<String?> fazerLogin(String email, String senha) async {
-    var url = 'http://localhost/teste.php';
+    var url = "${ConfigService.get("api_base_url")}${ConfigService.get("login_endpoint")}";
 
      try {
       final response = await http.post(
@@ -190,8 +205,8 @@ class _LoginPageState extends State<LoginPage> {
                             controller: _emailController,
                             autofocus: true,
                             keyboardType: TextInputType.emailAddress,
-                            style: TextStyle(color: Colors.black),
-                            decoration: InputDecoration(
+                            style: const TextStyle(color: Colors.black),
+                            decoration: const InputDecoration(
                               labelText: 'Email',
                               labelStyle: TextStyle(color: Colors.black),
                               enabledBorder: UnderlineInputBorder(
@@ -209,15 +224,15 @@ class _LoginPageState extends State<LoginPage> {
                             },
                           ),
 
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
 
                           TextFormField(
                             controller: _senhaController,
                             autofocus: true,
                             keyboardType: TextInputType.visiblePassword,
                             obscureText: true,
-                            style: TextStyle(color: Colors.black),
-                            decoration: InputDecoration(
+                            style: const TextStyle(color: Colors.black),
+                            decoration: const InputDecoration(
                               labelText: 'Senha',
                               labelStyle: TextStyle(color: Colors.black),
                               enabledBorder: UnderlineInputBorder(
@@ -237,7 +252,7 @@ class _LoginPageState extends State<LoginPage> {
                             },
                           ),
 
-                          SizedBox(height: 30),
+                          const SizedBox(height: 30),
 
                           //debug ---------------------------
                           /*
@@ -304,7 +319,14 @@ class _LoginPageState extends State<LoginPage> {
                               style: TextStyle(color: Color.fromARGB(255, 255, 255, 255),fontWeight: FontWeight.bold), // Cor do texto do botão
                             ),
                           ),
-
+                          Text.rich(
+                            TextSpan(
+                              text: 'api',
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = _launchURL2,
+                            ),
+                              
+                          ),
                           //---------------------------------
 
                           ElevatedButton(

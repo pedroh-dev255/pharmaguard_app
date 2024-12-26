@@ -32,17 +32,15 @@ class _RemPageState extends State<RemPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          IconButton(
-            icon: Icon(Icons.arrow_back_outlined),
-            onPressed: (){
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-              );
-            },
-          ),
-        ],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_outlined),
+          onPressed: (){
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+          },
+        ),
       ),
     );
   }

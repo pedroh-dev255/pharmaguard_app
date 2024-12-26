@@ -38,11 +38,12 @@ class NotificationService {
   }
 
   // Buscar notificações da API
-  /*
+  
   static Future<void> fetchAndShowNotifications(String apiUrl) async {
     try {
       final response = await http.get(Uri.parse(apiUrl));
 
+      
       if (response.statusCode == 200) {
         final List notifications = jsonDecode(response.body);
 
@@ -54,7 +55,7 @@ class NotificationService {
       }
     } catch (e) {
       print("Erro ao conectar à API: $e");
+      print(apiUrl);
     }
   }
-  */
 }
