@@ -1,9 +1,11 @@
+//dependencias
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
+//serviçõs
 import '../services/config_service.dart';
+//paginas
 import 'home.page.dart';
 
 class AddPage extends StatefulWidget {
@@ -19,6 +21,8 @@ class _AddPageState extends State<AddPage> {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _quantController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  bool _isLoading = false;
 
   late Future<Map<String, String?>> _getUserData;
   List<Map<String, String>> _armazens = [];
@@ -88,6 +92,10 @@ class _AddPageState extends State<AddPage> {
   }
 
   Future<void> _fetchArmazenamentos() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     final String? baseUrl = ConfigService.get("api_base_url");
     final String? listArmEndpoint = ConfigService.get("listArmazem_endpoint");
 
@@ -109,6 +117,10 @@ class _AddPageState extends State<AddPage> {
       }
     } catch (e) {
       _handleApiError(null, "$baseUrl$listArmEndpoint", error: e);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -124,8 +136,11 @@ class _AddPageState extends State<AddPage> {
     //print(endpoint);
   }
 
-  Future<String?> adicionarMedic(
-      String nome, String principio, String validade, String quantidade, String? armazem) async {
+  Future<String?> adicionarMedic(String nome, String principio, String validade, String quantidade, String? armazem) async {
+    setState(() {
+        _isLoading = true;
+    });
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userId = prefs.getString('userId');
     String url = "${ConfigService.get("api_base_url")}${ConfigService.get("adicionar_endpoint")}";
@@ -147,7 +162,12 @@ class _AddPageState extends State<AddPage> {
       return _processApiResponse(response);
     } catch (e) {
       //print('Erro ao tentar adicionar: $e');
+      _showAlert('Erro ao tentar adicionar o medicamento\n\nVerifique sua conexão.\n\nerror: $e');
       return 'Erro ao tentar adicionar o medicamento\n\nVerifique sua conexão.\n\nerror: $e';
+    }  finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -165,6 +185,7 @@ class _AddPageState extends State<AddPage> {
 
   @override
   void initState() {
+
     super.initState();
     _getUserData = _getUserDataAsync();
     _fetchArmazenamentos();
@@ -186,53 +207,75 @@ class _AddPageState extends State<AddPage> {
           },
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(18),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              _buildTextField(
-                controller: _nomeController,
-                label: 'Nome Medicamento',
-                validator: (value) => value == null || value.isEmpty
-                    ? 'Insira um nome válido!'
-                    : null,
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            padding: const EdgeInsets.all(18),
+            child: AbsorbPointer(
+              absorbing: _isLoading,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const SizedBox(height: 50),
+                    
+                    const Text("Adicionar Medicamento",
+                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)
+                    ),
+
+                    const SizedBox(height: 40),
+                    
+                    _buildTextField(
+                      controller: _nomeController,
+                      label: 'Nome Medicamento',
+                      validator: (value) => value == null || value.isEmpty
+                          ? 'Insira um nome válido!'
+                          : null,
+                    ),
+                    const SizedBox(height: 20),
+                    _buildTextField(
+                      controller: _principioController,
+                      label: 'Princípio Ativo',
+                      validator: (value) => value == null || value.isEmpty
+                          ? 'Insira um princípio válido!'
+                          : null,
+                    ),
+                    const SizedBox(height: 30),
+                    _buildDateField(),
+                    const SizedBox(height: 30),
+                    _buildTextField(
+                      controller: _quantController,
+                      label: 'Quantidade',
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value == null || value.isEmpty || int.tryParse(value) == 0) {
+                          return 'Insira uma quantidade válida!';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 30),
+                    _buildDropdownField(),
+                    const SizedBox(height: 30),
+                    ElevatedButton(
+                      onPressed: _handleFormSubmit,
+                      child: const Text('Adicionar Medicamento'),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 20),
-              _buildTextField(
-                controller: _principioController,
-                label: 'Princípio Ativo',
-                validator: (value) => value == null || value.isEmpty
-                    ? 'Insira um princípio válido!'
-                    : null,
-              ),
-              const SizedBox(height: 30),
-              _buildDateField(),
-              const SizedBox(height: 30),
-              _buildTextField(
-                controller: _quantController,
-                label: 'Quantidade',
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty || int.tryParse(value) == 0) {
-                    return 'Insira uma quantidade válida!';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 30),
-              _buildDropdownField(),
-              const SizedBox(height: 30),
-              ElevatedButton(
-                onPressed: _handleFormSubmit,
-                child: const Text('Adicionar Medicamento'),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+          if (_isLoading)
+          Container(
+            color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        ],
+      )
     );
   }
 
