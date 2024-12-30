@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -19,11 +21,10 @@ class _AddPageState extends State<AddPage> {
   final TextEditingController _principioController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _quantController = TextEditingController();
-  final TextEditingController _armController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
-  
+  late Future<Map<String, String?>> _getUserData;
 
   
   List<Map<String, String>> _armazens = [];
@@ -108,9 +109,52 @@ class _AddPageState extends State<AddPage> {
     }
   }
 
+  Future<String?> adicionarMedic(String nome, String principio, String validade, String quantidade, String? armazem) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userId = prefs.getString('userId');
+    var url = "${ConfigService.get("api_base_url")}${ConfigService.get("adicionar_endpoint")}";
+
+     try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'nome': nome,
+          'principio': principio,
+          'validade':validade,
+          'quantidade': quantidade,
+          'armazem': armazem,
+          'id_user': userId,
+        }),
+      );
+
+      
+      if (response.statusCode == 200) {
+
+        final data = jsonDecode(response.body);
+
+        if (data['success'] == true) {
+          return 'Login realizado com sucesso!';
+        } else {
+          print('Erro ao adicionar: ${data['error']}');
+          return 'Erro ao adicionar: ${data['error']}';
+        }
+      } else {
+        print('Erro ao tentar adicionar: ${response.body}');
+        return 'Erro ao adicionar: ${response.body}';
+      }
+    } catch (e) {
+      print('Erro ao tentar adicionar: $e');
+      return 'Erro ao tentar adicionar: $e';
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    _getUserData = _getUserDataAsync();
     _fetchArmazenamentos(); // Chama a função ao inicializar o widget
   }
 
@@ -271,6 +315,8 @@ class _AddPageState extends State<AddPage> {
                   setState(() {
                     _selectedArmazenamento = value;
                   });
+
+
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -285,13 +331,34 @@ class _AddPageState extends State<AddPage> {
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    print(_getUserDataAsync().toString());
+                    print(_getUserData);
 
-                    print("Post: $_nomeController \n$_principioController\n$_dateController\n$_quantController\n$_selectedArmazenamento");
+                    String nome = _nomeController.text;
+                    String principio = _principioController.text;
+                    String vencimento = _dateController.text;
+                    String quantidade = _quantController.text;
+                    String? armazenamento = _selectedArmazenamento;
+
+                    String? result = await adicionarMedic(nome, principio, vencimento, quantidade, armazenamento);
+
+                    if (result != null) {
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(result)),
+                      );
+
+                      if (result.contains('Login realizado com sucesso')) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomePage()),
+                        );
+                      }
+                    }
                   }
+                  print("Post: $_nomeController \n$_principioController\n$_dateController\n$_quantController\n$_selectedArmazenamento");
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 93, 255, 126),
+                  backgroundColor: const Color.fromARGB(255, 93, 255, 126),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),

@@ -9,12 +9,16 @@
 .history
 .svn/
 migrate_working_dir/
-config.json
+
+assets/config.json
+
 # IntelliJ related
 *.iml
 *.ipr
 *.iws
 .idea/
+.vscode
+
 .env
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
@@ -41,3 +45,4 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+config.json

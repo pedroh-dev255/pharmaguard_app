@@ -1,6 +1,6 @@
 {
     "creditos_url": "https://www.phsolucoes.site",
-    "api_base_url": "http://10.0.3.15/PharmaGuard/API/index.php",
+    "api_base_url": "http://10.0.3.15/pharmaguard/API/index.php",
     "notifications_endpoint": "/notifications",
     "login_endpoint": "/login",
     "listArmazem_endpoint": "/list-arm",

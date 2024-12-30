@@ -115,12 +115,12 @@ class _LoginPageState extends State<LoginPage> {
 
           return 'Login realizado com sucesso!';
         } else {
-          print('Erro ao tentar fazer login: ${data['error']}');
-          return 'Erro ao fazer login: ${data['error']}';
+          print('Erro ao tentar fazer login(api): ${data['error']}');
+          return 'Erro ao fazer login(api): ${data['error']}';
         }
       } else {
-        print('Erro ao tentar fazer login: ${response.body}');
-        return 'Erro ao fazer login: ${response.body}';
+        print('Erro ao tentar fazer login(api): ${response.body}');
+        return 'Erro ao fazer login(api): ${response.body}';
       }
     } catch (e) {
       print('Erro ao tentar fazer login: $e');
