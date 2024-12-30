@@ -185,7 +185,6 @@ class _AddPageState extends State<AddPage> {
 
   @override
   void initState() {
-
     super.initState();
     _getUserData = _getUserDataAsync();
     _fetchArmazenamentos();
@@ -261,6 +260,11 @@ class _AddPageState extends State<AddPage> {
                     ElevatedButton(
                       onPressed: _handleFormSubmit,
                       child: const Text('Adicionar Medicamento'),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 33, 243, 163)),
+                        foregroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 71, 70, 70)),
+
+                      ),
                     ),
                   ],
                 ),

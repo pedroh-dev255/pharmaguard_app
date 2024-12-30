@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'add.page.dart';
-import 'rem.page.dart';
+import 'lista.page.dart';
 import './login.page.dart';
 
 class HomePage extends StatefulWidget {
@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment
                         .center,
                     children: [
-                  Text(userData.toString()),
+                  //Text(userData.toString()),
 
                   ElevatedButton(
                     onPressed: () {
@@ -100,19 +100,19 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => RemPage()),
+                        MaterialPageRoute(builder: (context) => ListPage()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 255, 0, 0),
+                      backgroundColor: const Color.fromARGB(255, 54, 232, 245),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                     child: const Text(
-                      'Rem Medicamentos',
+                      'Listar Medicamentos',
                       style: TextStyle(
-                          color: Color.fromARGB(255, 255, 255, 255),
+                          color: Color.fromARGB(255, 78, 77, 77),
                           fontWeight: FontWeight.bold), // Cor do texto do botão
                     ),
                   ),
