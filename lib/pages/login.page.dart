@@ -33,9 +33,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    
-
-
     super.initState();
     _checkLoginStatus();
   }
@@ -123,12 +120,12 @@ class _LoginPageState extends State<LoginPage> {
         return 'Erro ao fazer login(api): ${response.body}';
       }
     } catch (e) {
+      _showAlert('Erro ao Acessar API: $e');
       print('Erro ao tentar fazer login: $e');
       return 'Erro ao tentar fazer login: $e';
     }
   }
 
-  /*
   void _showAlert(String message) {
     showDialog(
       context: context,
@@ -148,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
       },
     );
   }
-  */
+  
   @override
   void dispose() {
     
@@ -299,7 +296,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
 
                           Text('}'),
-                          */
+                          
 
                           ElevatedButton(
                             onPressed: () {
@@ -327,6 +324,8 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                               
                           ),
+
+                          */
                           //---------------------------------
 
                           ElevatedButton(
@@ -373,7 +372,7 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             TextSpan(
                               text: '@2024 ',
-                              style: TextStyle(
+                               style: TextStyle(
                                 color: const Color.fromARGB(255, 238, 238, 238),
                                 fontWeight: FontWeight.bold,
                                 height: 8,

@@ -32,6 +32,8 @@ class _RemPageState extends State<RemPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_outlined),
           onPressed: (){
