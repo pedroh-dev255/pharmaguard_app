@@ -95,6 +95,7 @@ Future<void> _fetchMedicamentos({String? searchQuery}) async {
                     'id': item['ID'],
                     "nome": item["Nome"].toString(),
                     "principio": item["Principio_Ativo"].toString(),
+                    "armazenado": item["Armazenamento"].toString(),
                     "quantidade": item["Quantidade"].toString(),
                     "validade": item["Validade"].toString(),
                   })
@@ -123,6 +124,7 @@ Future<void> _fetchMedicamentos({String? searchQuery}) async {
                     'id': item['ID'],
                     "nome": item["Nome"].toString(),
                     "principio": item["Principio_Ativo"].toString(),
+                    "armazenado": item["Armazenamento"].toString(),
                     "quantidade": item["Quantidade"].toString(),
                     "validade": item["Validade"].toString(),
                   })
@@ -190,6 +192,7 @@ Future<void> _fetchMedicamentos({String? searchQuery}) async {
             children: [
               Text("Medicamento: ${medicamento['nome']}"),
               Text("Princípio Ativo: ${medicamento['principio']}"),
+              Text("Local: ${medicamento['armazenado']}"),
               Text("Validade: ${medicamento['validade']}"),
               const SizedBox(height: 20),
               DropdownButtonFormField<String>(
@@ -383,6 +386,7 @@ Future<void> _fetchMedicamentos({String? searchQuery}) async {
                                         ),
                                         softWrap: true,
                                       ),
+                                      Text("Local: ${medicamento['armazenado']}"),
                                       Text("Quantidade: ${medicamento['quantidade']}"),
                                       Text("Validade: ${DateFormat('dd/MM/yyyy').format(validade)}"),
                                     ],
