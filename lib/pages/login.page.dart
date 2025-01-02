@@ -83,48 +83,47 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<String?> fazerLogin(String email, String senha) async {
-    var url = "${ConfigService.get("api_base_url")}${ConfigService.get("login_endpoint")}";
+  var url = "${ConfigService.get("api_base_url")}${ConfigService.get("login_endpoint")}";
 
-     try {
-      final response = await http.post(
-        Uri.parse(url),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          'email': email,
-          'password': senha,
-        }),
-      );
+  try {
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'email': email,
+        'password': senha,
+      }),
+    );
 
-      
-      if (response.statusCode == 200) {
+    print('Status Code: ${response.statusCode}');
+    print('Resposta da API: ${response.body}');  // Adicione um log para capturar o corpo da resposta
 
-        final data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
 
-        if (data['success'] == true) {
-          
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          await prefs.setString('userId', data['user']['id'].toString());
-          await prefs.setString('userEmail', data['user']['email']);
-          await prefs.setString('userName', data['user']['name']);
-          await prefs.setString('userProfile', data['user']['profile']);
+      if (data['success'] == true) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('userId', data['user']['id'].toString());
+        await prefs.setString('userEmail', data['user']['email']);
+        await prefs.setString('userName', data['user']['name']);
+        await prefs.setString('userProfile', data['user']['profile']);
 
-          return 'Login realizado com sucesso!';
-        } else {
-          print('Erro ao tentar fazer login(api): ${data['error']}');
-          return 'Erro ao fazer login(api): ${data['error']}';
-        }
+        return 'Login realizado com sucesso!';
       } else {
-        print('Erro ao tentar fazer login(api): ${response.body}');
-        return 'Erro ao fazer login(api): ${response.body}';
+        return 'Erro ao tentar fazer login: ${data['error']}';
       }
-    } catch (e) {
-      _showAlert('Erro ao Acessar API: $e');
-      print('Erro ao tentar fazer login: $e');
-      return 'Erro ao tentar fazer login: $e';
+    } else {
+      return 'Erro ao tentar fazer login: ${response.body}';
     }
+  } catch (e) {
+    print('Erro ao tentar fazer login: $e');
+    return 'Erro ao tentar fazer login: $e';
   }
+}
+
+
 
   void _showAlert(String message) {
     showDialog(
