@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Erro ao carregar dados do usuário'));
           } else {
-            final userData = snapshot.data!;
+            //final userData = snapshot.data!;
             return Center(
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment
